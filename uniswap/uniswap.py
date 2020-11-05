@@ -464,14 +464,14 @@ class Uniswap:
         recipient: AddressLike = None,
     ) -> HexBytes:
         """Make a trade by defining the qty of the output token."""
-        if input_token == ETH_ADDRESS or input_token == '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2':
+        if input_token == ETH_ADDRESS:
             balance = self.get_eth_balance()
             need = self.get_eth_token_output_price(output_token, qty)
             if balance < need:
                 raise InsufficientBalance(balance, need)
             return self._eth_to_token_swap_output(output_token, qty, recipient)
         else:
-            if output_token == ETH_ADDRESS:
+            if output_token == ETH_ADDRESS or input_token == '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2':
                 qty = Wei(qty)
                 return self._token_to_eth_swap_output(input_token, qty, recipient)
             else:
